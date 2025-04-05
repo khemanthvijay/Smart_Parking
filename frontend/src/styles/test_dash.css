@@ -1,0 +1,263 @@
+/* ---------------------------------------------------------
+   Global Styles
+--------------------------------------------------------- */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* Hide horizontal scroll */
+}
+
+/* ---------------------------------------------------------
+   Navbar
+--------------------------------------------------------- */
+.navbar {
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  position: fixed;
+  top: 0;
+  z-index: 1000;
+}
+
+.navbar-container {
+  display: flex;
+  justify-content: space-between; /* Left: logo, Right: nav-links */
+  align-items: center;
+  padding: 16px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.logo {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.nav-button {
+  padding: 8px 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: transparent;
+  color: black;
+  cursor: pointer;
+}
+
+.nav-button:hover {
+  background-color: #f0f0f0;
+}
+
+/* ---------------------------------------------------------
+   Footer
+--------------------------------------------------------- */
+.footer {
+  background-color: #f1f1f1;
+  padding: 16px;
+  text-align: center;
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  z-index: 1000;
+}
+
+/* ---------------------------------------------------------
+   Sidebar
+--------------------------------------------------------- */
+.sidebar {
+  width: 250px;
+  background-color: #f1f1f1;
+  position: sticky;
+  top: 64px; /* Adjust to your navbar height */
+  height: calc(100vh - 64px);
+  padding-top: 16px;
+  overflow-y: auto;
+}
+
+.sidebar .button {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 4px;
+  background-color: transparent;
+  color: black;
+  text-align: left;
+  cursor: pointer;
+  margin-bottom: 8px;
+}
+
+.sidebar .button.outline {
+  border: 1px solid #ccc;
+}
+
+.sidebar .button.outline:hover {
+  background-color: #e0e0e0;
+}
+
+.sidebar .button.default {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+.sidebar .button.default:hover {
+  background-color: #0056b3;
+}
+
+/* ---------------------------------------------------------
+   Hero Section
+--------------------------------------------------------- */
+.hero-section {
+  flex: 1;
+  margin-top: 64px; /* Content below navbar */
+  margin-bottom: 64px; /* Content above footer */
+  padding: 16px;
+}
+
+.hero-section h2 {
+  margin-bottom: 16px;
+}
+
+.hero-section .card {
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.hero-section .card-header {
+  margin-bottom: 8px;
+}
+
+.hero-section .card-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.hero-section .card-content {
+  color: #555;
+}
+
+.hero-section .button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+}
+
+.hero-section .button:hover {
+  background-color: #0056b3;
+}
+
+.hero-section .grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+@media (min-width: 768px) {
+  .hero-section .grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* ---------------------------------------------------------
+   Utility Classes
+--------------------------------------------------------- */
+.flex {
+  display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.flex-1 {
+  flex: 1;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.text-2xl {
+  font-size: 1.5rem;
+}
+
+.font-bold {
+  font-weight: bold;
+}
+
+.text-black {
+  color: black;
+}
+
+.text-white {
+  color: white;
+}
+
+.bg-blue-500 {
+  background-color: #007bff;
+}
+
+.bg-gray-100 {
+  background-color: #f1f1f1;
+}
+
+.text-sm {
+  font-size: 0.875rem;
+}
+
+.text-red-500 {
+  color: #ff0000;
+}
+
+.text-muted-foreground {
+  color: #555;
+}
+
+.p-4 {
+  padding: 16px;
+}
+
+.mb-2 {
+  margin-bottom: 8px;
+}
+
+.mb-4 {
+  margin-bottom: 16px;
+}
+
+.w-full {
+  width: 100%;
+}
+
+.justify-start {
+  justify-content: flex-start;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.space-x-4 {
+  gap: 16px;
+}
+
+.sticky {
+  position: sticky;
+}
+
+.top-64 {
+  top: 64px;
+}
