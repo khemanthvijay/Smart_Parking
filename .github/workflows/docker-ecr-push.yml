@@ -44,5 +44,5 @@ jobs:
       - name: Build, Tag, and Push Nginx Image
         run: |
           IMAGE_URI=$ACCOUNT_ID.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPO_NGINX }}
-          docker build -t $IMAGE_URI .  # assuming nginx config is in root
+          docker build -t $IMAGE_URI ./nginx-for-ECR  # assuming nginx config is in root
           docker push $IMAGE_URI
