@@ -1,26 +1,11 @@
-# frontend/Dockerfile
-FROM node:14-alpine
-
-# Set the working directory inside the container
+FROM node:18-alpine AS build
 WORKDIR /app
-
-# Copy package.json and package-lock.json (for caching)
-COPY package.json package-lock.json ./
-
-# Install dependencies
-RUN npm install
-
-# Copy the rest of the application into the container
 COPY . .
-
-# Build the React app
+RUN npm install
 RUN npm run build
 
-# Install a simple static file server to serve the build
-RUN npm install -g serve
-
-# Expose the port that the React app will be running on
-EXPOSE 3000
-
-# Serve the React app
-CMD ["serve", "-s", "build"]
+# Stage 2: Serve with Nginx
+FROM nginx:alpine
+COPY --from=build /app/build /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]

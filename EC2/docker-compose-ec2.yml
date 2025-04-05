@@ -1,0 +1,52 @@
+
+version: '3.8'
+
+services:
+  backend:
+    image: 537124969361.dkr.ecr.us-west-1.amazonaws.com/smart_parking_backend:latest
+    environment:
+      - DATABASE_URL=postgres://Admin:Hemanth%402001@postgres:5432/Parking_Security
+    depends_on:
+      - postgres
+      - redis
+    restart: always
+    networks:
+      - app-network
+
+  frontend:
+    image: 537124969361.dkr.ecr.us-west-1.amazonaws.com/smart_parking_frontend:latest
+    networks:
+      - app-network
+
+  postgres:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: Admin
+      POSTGRES_PASSWORD: Hemanth@2001
+      POSTGRES_DB: Parking_Security
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  redis:
+    image: redis:6
+    networks:
+      - app-network
+
+  nginx:
+    image: 537124969361.dkr.ecr.us-west-1.amazonaws.com/smart_parking_nginx:latest
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+      - frontend
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
