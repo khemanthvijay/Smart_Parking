@@ -15,6 +15,13 @@ services:
 
   frontend:
     image: 537124969361.dkr.ecr.us-west-1.amazonaws.com/smart_parking_frontend:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /etc/nginx/ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - backend
     networks:
       - app-network
 
@@ -31,16 +38,6 @@ services:
 
   redis:
     image: redis:6
-    networks:
-      - app-network
-
-  nginx:
-    image: 537124969361.dkr.ecr.us-west-1.amazonaws.com/smart_parking_nginx:latest
-    ports:
-      - "80:80"
-    depends_on:
-      - backend
-      - frontend
     networks:
       - app-network
 
