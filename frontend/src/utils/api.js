@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://localhost:5000";
+const API_BASE_URL = "/api";
 export const apiRequest = async (endpoint, method = 'GET', body = null, customHeaders = {}) => {
   const url = `${API_BASE_URL}${endpoint}`;
   const options = {
