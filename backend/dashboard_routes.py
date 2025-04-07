@@ -7,13 +7,7 @@ from auth_utils import role_required  # Moved to separate module to avoid circul
 dashboard_bp = Blueprint("dashboard", __name__)
 
 # PostgreSQL Database Connection
-db_conn = psycopg2.connect(
-    dbname="Parking_Security",
-    user="Admin",
-    password="Hemanth@2001",
-    host="postgres",
-    port="5432"
-)
+db_conn = psycopg2.connect("DATABASE_URL")
 db_cursor = db_conn.cursor()
 
 # Redis Connection
