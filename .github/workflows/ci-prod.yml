@@ -1,0 +1,54 @@
+
+name: CI/CD - Prod Deploy (version tag)
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  deploy-prod:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ secrets.AWS_REGION }}
+
+    - name: Login to Amazon ECR
+      uses: aws-actions/amazon-ecr-login@v1
+
+    - name: Extract Version Tag
+      id: extract_tag
+      run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+
+    - name: Build and Push Backend (versioned)
+      run: |
+        IMAGE=537124969361.dkr.ecr.us-west-1.amazonaws.com/smart_parking_backend
+        docker build -t $IMAGE:$VERSION -t $IMAGE:latest ./backend
+        docker push $IMAGE:$VERSION
+        docker push $IMAGE:latest
+
+    - name: Build and Push Frontend (versioned)
+      run: |
+        IMAGE=537124969361.dkr.ecr.us-west-1.amazonaws.com/smart_parking_frontend
+        docker build -t $IMAGE:$VERSION -t $IMAGE:latest ./frontend
+        docker push $IMAGE:$VERSION
+        docker push $IMAGE:latest
+
+    - name: Deploy to EC2 (Prod)
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
+          cd ~
+          docker-compose -f docker-compose-ec2.yml pull
+          docker-compose -f docker-compose-ec2.yml up -d
+        EOF
