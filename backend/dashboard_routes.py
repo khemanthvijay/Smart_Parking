@@ -3,11 +3,12 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 import psycopg2
 import redis
 from auth_utils import role_required  # Moved to separate module to avoid circular imports
+import os
 
 dashboard_bp = Blueprint("dashboard", __name__)
 
 # PostgreSQL Database Connection
-db_conn = psycopg2.connect("DATABASE_URL")
+db_conn = psycopg2.connect(os.getenv("DATABASE_URL"))
 db_cursor = db_conn.cursor()
 
 # Redis Connection

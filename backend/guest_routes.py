@@ -5,12 +5,12 @@ import random, string
 from flask_jwt_extended import jwt_required, get_jwt_identity, create_access_token,set_access_cookies
 import bcrypt
 import redis
-
+import os
 
 guest_bp = Blueprint("guest", __name__)
 
 # PostgreSQL Database Connection
-db_conn = psycopg2.connect("DATABASE_URL")
+db_conn = psycopg2.connect(os.getenv("DATABASE_URL"))
 db_cursor = db_conn.cursor()
 
 redis_client = redis.StrictRedis(host="localhost", port=6379, db=0, decode_responses=True)
