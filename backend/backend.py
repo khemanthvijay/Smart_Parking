@@ -23,13 +23,7 @@ app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(minutes=30)
 jwt = JWTManager(app)
 
 # PostgreSQL Database Connection
-db_conn = psycopg2.connect(
-    dbname="Parking_Security", 
-    user="Admin",
-    password="Hemanth@2001", 
-    host="postgres",
-    port="5432"
-)
+db_conn = psycopg2.connect(os.getenv("DATABASE_URL"))
 db_cursor = db_conn.cursor()
 
 # Redis Connection
