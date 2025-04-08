@@ -27,7 +27,7 @@ jobs:
     - name: Build and Push Staging Frontend
       run: |
         IMAGE_URI=537124969361.dkr.ecr.us-west-1.amazonaws.com/smart_parking_frontend
-        docker build -f Dockerfile.staging -t $IMAGE_URI:latest ./frontend
+        docker build -f ./frontend/Dockerfile.staging -t $IMAGE_URI:latest ./frontend
         docker push $IMAGE_URI:latest
 
     - name: Deploy to EC2 (Staging)

@@ -30,7 +30,7 @@ jobs:
     - name: Build and Push Production Frontend
       run: |
         IMAGE_URI=537124969361.dkr.ecr.us-west-1.amazonaws.com/smart_parking_frontend
-        docker build -f Dockerfile.prod -t $IMAGE_URI:$VERSION -t $IMAGE_URI:latest ./frontend
+        docker build -f ./frontend/Dockerfile.prod -t $IMAGE_URI:$VERSION -t $IMAGE_URI:latest ./frontend
         docker push $IMAGE_URI:$VERSION
         docker push $IMAGE_URI:latest
 
