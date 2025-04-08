@@ -1,13 +1,13 @@
 
-name: CI/CD - Production Deploy (tag-based)
+name: CI/CD - Staging Deploy (develop branch)
 
 on:
   push:
-    tags:
-      - "v*"
+    branches:
+      - develop
 
 jobs:
-  prod-deploy:
+  staging-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -24,22 +24,18 @@ jobs:
     - name: Login to Amazon ECR
       uses: aws-actions/amazon-ecr-login@v1
 
-    - name: Extract tag version
-      run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
-
-    - name: Build and Push Production Frontend
+    - name: Build and Push Staging Frontend
       run: |
         IMAGE_URI=537124969361.dkr.ecr.us-west-1.amazonaws.com/smart_parking_frontend
-        docker build -f Dockerfile.prod -t $IMAGE_URI:$VERSION -t $IMAGE_URI:latest ./frontend
-        docker push $IMAGE_URI:$VERSION
+        docker build -f Dockerfile.staging -t $IMAGE_URI:latest ./frontend
         docker push $IMAGE_URI:latest
 
-    - name: Deploy to EC2 (Prod)
+    - name: Deploy to EC2 (Staging)
       run: |
         mkdir -p ~/.ssh
         echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
         ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
-          docker-compose -f docker-compose-ec2.yml pull
-          docker-compose -f docker-compose-ec2.yml up -d
+          docker-compose -f docker-compose-staging.yml pull
+          docker-compose -f docker-compose-staging.yml up -d
         EOF
