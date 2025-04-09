@@ -58,7 +58,7 @@ def generate_guest_identifier(first_name):
     return identifier
 
 # ---------------------- Guest Registration Endpoint ----------------------
-@guest_bp.route("/guest/register", methods=["POST"])
+@guest_bp.route("/api/guest/register", methods=["POST"])
 def guest_register():
     data = request.json
     data = data.get('formData')
@@ -124,7 +124,7 @@ def guest_register():
         return jsonify({"error": str(e)}), 500
 
 # ---------------------- Guest Set Password Endpoint ----------------------
-@guest_bp.route("/guest/set-password", methods=["POST"])
+@guest_bp.route("/api/guest/set-password", methods=["POST"])
 def set_guest_password():
     data = request.json
     guest_identifier = data.get("guestID")
@@ -153,7 +153,7 @@ def set_guest_password():
         return jsonify({"error": str(e)}), 500
 
 # ---------------------- Get Active Guest Bookings ----------------------
-@guest_bp.route("/guest/bookings", methods=["GET"])
+@guest_bp.route("/api/guest/bookings", methods=["GET"])
 def get_guest_bookings():
     try:
         db_cursor.execute("SELECT id, first_name, last_name, apt_number, start_time, end_time, contact_info, status FROM guest_bookings WHERE status = 'active'")
@@ -175,7 +175,7 @@ def get_guest_bookings():
         return jsonify({"error": str(e)}), 500
 
 # Additional endpoints for updating and deleting guest bookings would follow a similar pattern...
-@guest_bp.route("/guest/generate-code", methods=["POST"])
+@guest_bp.route("/api/guest/generate-code", methods=["POST"])
 @jwt_required(locations=["cookies"])
 def generate_guest_code():
     current_user = get_jwt_identity()
@@ -214,7 +214,7 @@ def generate_guest_code():
         db_conn.rollback()
         return jsonify({"error": str(e)}), 500
 
-@guest_bp.route("/guest/login", methods=["POST"])
+@guest_bp.route("/api/guest/login", methods=["POST"])
 def guest_login():
     data = request.json
     guest_identifier = data.get("guestIdentifier")
@@ -243,7 +243,7 @@ def guest_login():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     
-@guest_bp.route("/guest/dashboard", methods=["GET"])
+@guest_bp.route("/api/guest/dashboard", methods=["GET"])
 @jwt_required(locations=["cookies"])
 def guest_dashboard():
     current_guest = get_jwt_identity()
@@ -297,7 +297,7 @@ def guest_dashboard():
     return jsonify(dashboard_data), 200
 
 # ---------------------- GUEST CHANGE PASSWORD ----------------------
-@guest_bp.route("/guest/change-password", methods=["PUT"])
+@guest_bp.route("/api/guest/change-password", methods=["PUT"])
 @jwt_required(locations=["cookies"])
 def guest_change_password():
     current_guest = get_jwt_identity()
@@ -320,7 +320,7 @@ def guest_change_password():
         return jsonify({"error": str(e)}), 500
 
 # ---------------------- GUEST DELETE ACCOUNT ----------------------
-@guest_bp.route("/guest/delete-account", methods=["DELETE"])
+@guest_bp.route("/api/guest/delete-account", methods=["DELETE"])
 @jwt_required(locations=["cookies"])
 def guest_delete_account():
     current_guest = get_jwt_identity()
@@ -334,7 +334,7 @@ def guest_delete_account():
         return jsonify({"error": str(e)}), 500
 
 
-@guest_bp.route("/guest/bookings/<int:booking_id>", methods=["PUT"])
+@guest_bp.route("/api/guest/bookings/<int:booking_id>", methods=["PUT"])
 def update_guest_booking(booking_id):
     data = request.json
     start_time = data.get("startTime")
@@ -367,7 +367,7 @@ def update_guest_booking(booking_id):
         db_conn.rollback()
         return jsonify({"error": str(e)}), 500
 
-@guest_bp.route("/guest/bookings/<int:booking_id>", methods=["DELETE"])
+@guest_bp.route("/api/guest/bookings/<int:booking_id>", methods=["DELETE"])
 def delete_guest_booking(booking_id):
     try:
         db_cursor.execute("DELETE FROM guest_bookings WHERE id = %s", (booking_id,))

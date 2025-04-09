@@ -58,7 +58,7 @@ def role_required(allowed_roles):
     return decorator
 
 # ---------------------- USER LOGIN & STORE JWT IN COOKIE ----------------------
-@app.route("/login", methods=["POST"])
+@app.route("/api/login", methods=["POST"])
 def login():
     data = request.json
     if "aptNumber" in data and isinstance(data["aptNumber"], int):
@@ -97,14 +97,14 @@ def login():
 
 # ---------------------- PROTECTED ROUTES ----------------------
 
-@app.route("/logout", methods=["POST"])
+@app.route("/api/logout", methods=["POST"])
 @jwt_required(locations=["cookies"])
 def logout():
     response = jsonify({"message": "Logged out successfully!"})
     unset_jwt_cookies(response)
     return response, 200
 
-@app.route("/auth/me", methods=["GET"])
+@app.route("/api/auth/me", methods=["GET"])
 @jwt_required(locations=["cookies"])
 def auth_me():
     identity = get_jwt_identity()
@@ -129,7 +129,7 @@ def auth_me():
     return jsonify({"user": {"id": user_id, "identifier": identifier, "role": role, "status": status}}), 200
 
 # ---------------------- REGISTRATION ROUTES ----------------------
-@app.route('/register', methods=['POST'])
+@app.route('/api/register', methods=['POST'])
 def register_user():
     data = request.json
     email, apt_number, phone_number, password = data.get('email'), data.get('aptNumber'), data.get('phone_number', None), data.get('password')
@@ -148,7 +148,7 @@ def register_user():
         db_conn.rollback()
         return jsonify({"error": f"Failed to register user: {str(e)}"}), 500
 
-@app.route('/register_admin', methods=['POST'])
+@app.route('/api/register_admin', methods=['POST'])
 @role_required(["admin"])
 def register_admin():
     data = request.json

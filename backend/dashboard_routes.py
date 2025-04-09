@@ -42,7 +42,7 @@ def get_available_spaces():
     return available_spaces
 
 
-@dashboard_bp.route("/dashboard-user-data", methods=["GET"])
+@dashboard_bp.route("/api/dashboard-user-data", methods=["GET"])
 @jwt_required(locations=["cookies"])
 def dashboard_user_data():
     current_user = get_jwt_identity()
@@ -66,7 +66,7 @@ def dashboard_user_data():
         }
     }), 200
 
-@dashboard_bp.route("/open-gate", methods=["POST"])
+@dashboard_bp.route("/api/open-gate", methods=["POST"])
 @jwt_required(locations=["cookies"])
 def open_gate():
     current_user = get_jwt_identity()
@@ -90,7 +90,7 @@ def open_gate():
         return jsonify({"error": "Your account is not active or you don't have permission."}), 403
 
 # ---------------------- FETCH AVAILABLE PARKING SPACES ----------------------
-@dashboard_bp.route("/available-parking", methods=["GET"])
+@dashboard_bp.route("/api/available-parking", methods=["GET"])
 @role_required(["admin", "management"])
 def fetch_available_parking():
     try:
@@ -104,7 +104,7 @@ def fetch_available_parking():
         return jsonify({"error": str(e)}), 500
 
 # ---------------------- FETCH ALL USERS ----------------------
-@dashboard_bp.route("/dashboard-admin-all-users", methods=["GET"])
+@dashboard_bp.route("/api/dashboard-admin-all-users", methods=["GET"])
 @role_required(["admin", "management"])
 def fetch_users():
     try:
@@ -116,7 +116,7 @@ def fetch_users():
         return jsonify({"error": str(e)}), 500
 
 # ---------------------- FETCH SINGLE USER ----------------------
-@dashboard_bp.route("/user/<apt_number>", methods=["GET"])
+@dashboard_bp.route("/api/user/<apt_number>", methods=["GET"])
 @role_required(["admin", "management"])
 def fetch_user(apt_number):
     try:
@@ -163,7 +163,7 @@ def fetch_user(apt_number):
         return jsonify({"error": str(e)}), 500
 
 # ---------------------- UPDATE USER STATUS ----------------------
-@dashboard_bp.route("/update-status/<int:user_id>", methods=["POST"])
+@dashboard_bp.route("/api/update-status/<int:user_id>", methods=["POST"])
 @role_required(["admin", "management"])
 def update_status(user_id):
     try:
@@ -178,7 +178,7 @@ def update_status(user_id):
 
 
 # ---------------------- ASSIGN PARKING SPACE ----------------------
-@dashboard_bp.route("/assign-parking/<int:user_id>", methods=["POST"])
+@dashboard_bp.route("/api/assign-parking/<int:user_id>", methods=["POST"])
 @role_required(["admin", "management"])
 def assign_parking(user_id):
     try:
@@ -198,7 +198,7 @@ def assign_parking(user_id):
         return jsonify({"error": str(e)}), 500
 
 # ---------------------- REMOVE PARKING SPACE ----------------------
-@dashboard_bp.route("/remove-parking/<int:user_id>", methods=["POST"])
+@dashboard_bp.route("/api/remove-parking/<int:user_id>", methods=["POST"])
 @role_required(["admin", "management"])
 def remove_parking(user_id):
     try:
@@ -212,7 +212,7 @@ def remove_parking(user_id):
         return jsonify({"error": str(e)}), 500
 
 # ---------------------- DELETE USER ----------------------
-@dashboard_bp.route("/delete-user/<int:user_id>", methods=["DELETE"])
+@dashboard_bp.route("/api/delete-user/<int:user_id>", methods=["DELETE"])
 @role_required(["admin", "management"])
 def delete_user(user_id):
     try:
