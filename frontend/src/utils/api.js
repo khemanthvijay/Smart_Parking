@@ -1,4 +1,4 @@
-const API_BASE_URL = "/api";
+const API_BASE_URL = "/";
 export const apiRequest = async (endpoint, method = 'GET', body = null, customHeaders = {}) => {
   const url = `${API_BASE_URL}${endpoint}`;
   const options = {
