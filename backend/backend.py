@@ -109,6 +109,7 @@ def logout():
 def auth_me():
     identity = get_jwt_identity()
     user_id = identity["id"]
+    role = identity["role"]
 
     stored_token = redis_client.get(f"user:{user_id}")
     if not stored_token:
@@ -116,17 +117,35 @@ def auth_me():
 
     redis_client.expire(f"user:{user_id}", 1800)
 
-    query = "SELECT id, apt_number, username, role, status FROM user_management WHERE id = %s"
-    db_cursor.execute(query, (user_id,))
-    user = db_cursor.fetchone()
+    if role == "guest":
+        query = "SELECT id, guest_identifier, booking_id, created_at FROM guest_accounts WHERE id = %s"
+        db_cursor.execute(query, (user_id,))
+        result = db_cursor.fetchone()
+        if not result:
+            return jsonify({"error": "Guest not found"}), 404
 
-    if not user:
-        return jsonify({"error": "User not found"}), 404
-
-    user_id, apt_number, username, role, status = user
-    identifier = apt_number if role == "user" else username
-
-    return jsonify({"user": {"id": user_id, "identifier": identifier, "role": role, "status": status}}), 200
+        guest_id, guest_identifier, booking_id, created_at = result
+        return jsonify({
+                "user": {
+                    "id": guest_id,
+                    "identifier": guest_identifier,
+                    "booking_id": booking_id,
+                    "role": "guest",
+                    "created_at": str(created_at)
+                }
+            }), 200
+    else:
+        query = "SELECT id, apt_number, username, role, status FROM user_management WHERE id = %s"
+        db_cursor.execute(query, (user_id,))
+        user = db_cursor.fetchone()
+        
+        if not user:
+            return jsonify({"error": "User not found"}), 404
+        
+        user_id, apt_number, username, role, status = user
+        identifier = apt_number if role == "user" else username
+        
+        return jsonify({"user": {"id": user_id, "identifier": identifier, "role": role, "status": status}}), 200
 
 # ---------------------- REGISTRATION ROUTES ----------------------
 @app.route('/api/register', methods=['POST'])
