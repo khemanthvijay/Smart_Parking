@@ -3,7 +3,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 import psycopg2
 import redis
 from auth_utils import role_required  # role_required defined in auth_utils.py to avoid circular imports
-import os
+import os, json
 dashboard_bp = Blueprint("dashboard", __name__)
 
 # PostgreSQL Database Connection
@@ -59,7 +59,7 @@ def get_available_spaces():
 @dashboard_bp.route("/api/dashboard-user-data", methods=["GET"])
 @jwt_required(locations=["cookies"])
 def dashboard_user_data():
-    current_user = get_jwt_identity()
+    current_user = json.loads(get_jwt_identity())
     user_id = current_user.get("id")
     db_cursor.execute("SELECT * FROM user_management WHERE id = %s", (user_id,))
     result = db_cursor.fetchone()

@@ -247,7 +247,7 @@ def guest_login():
 @jwt_required(locations=["cookies"])
 def guest_dashboard():
     current_guest = get_jwt_identity()
-    guest_id = current_guest.get("id")
+    guest_id = json.loads(current_guest.get("id"))
     # Fetch guest account info along with a booking reference.
     db_cursor.execute("""
         SELECT ga.guest_identifier, ga.created_at, gb.first_name, gb.last_name, gb.apt_number, 
