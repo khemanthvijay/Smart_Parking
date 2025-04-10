@@ -12,7 +12,7 @@ from functools import wraps
 from auth_utils import role_required
 from temp_dash_route import dashboard_bp
 from guest_routes import guest_bp
-import os
+import os, json
 # Initialize Flask App
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "http://localhost:3000", "methods": ["GET", "POST", "OPTIONS"]}}, supports_credentials=True)
@@ -88,7 +88,7 @@ def login():
     if not bcrypt.checkpw(password.encode("utf-8"), hashed_password.encode("utf-8")):
         return jsonify({"error": "Invalid credentials"}), 401
 
-    access_token = create_access_token(identity={"id": user_id, "role": role})
+    access_token = create_access_token(identity=json.dumps({"id": user_id, "role": role}))
     redis_client.setex(f"user:{user_id}", 1800, access_token)
 
     response = jsonify({"user": {"id": user_id, "identifier": identifier, "role": role, "status": status}})
@@ -107,7 +107,7 @@ def logout():
 @app.route("/api/auth/me", methods=["GET"])
 @jwt_required(locations=["cookies"])
 def auth_me():
-    identity = get_jwt_identity()
+    identity = json.loads(get_jwt_identity())
     user_id = identity["id"]
     role = identity["role"]
 

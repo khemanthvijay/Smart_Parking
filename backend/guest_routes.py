@@ -5,7 +5,7 @@ import random, string
 from flask_jwt_extended import jwt_required, get_jwt_identity, create_access_token,set_access_cookies
 import bcrypt
 import redis
-import os
+import os, json
 
 guest_bp = Blueprint("guest", __name__)
 
@@ -234,7 +234,7 @@ def guest_login():
             return jsonify({"error": "Invalid credentials"}), 401
 
         # Create a JWT token for the guest
-        access_token = create_access_token(identity={"id": account_id, "role": "guest", "guestIdentifier": guest_identifier})
+        access_token = create_access_token(identity=json.dumps({"id": account_id, "role": "guest", "guestIdentifier": guest_identifier}))
         redis_client.setex(f"user:{account_id}", 1800, access_token)
         response = jsonify({"access_token": access_token})
         set_access_cookies(response, access_token)
