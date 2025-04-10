@@ -13,7 +13,7 @@ guest_bp = Blueprint("guest", __name__)
 db_conn = psycopg2.connect(os.getenv("DATABASE_URL"))
 db_cursor = db_conn.cursor()
 
-redis_client = redis.StrictRedis(host="localhost", port=6379, db=0, decode_responses=True)
+redis_client = redis.StrictRedis(host="redis", port=6379, db=0, decode_responses=True)
 
 # ---------------------- Helper Functions ----------------------
 def validate_booking_times(start_time_str, end_time_str):

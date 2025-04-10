@@ -11,7 +11,7 @@ db_conn = psycopg2.connect(os.getenv("DATABASE_URL"))
 db_cursor = db_conn.cursor()
 
 # Redis Connection
-redis_client = redis.StrictRedis(host="localhost", port=6379, db=0, decode_responses=True)
+redis_client = redis.StrictRedis(host="redis", port=6379, db=0, decode_responses=True)
 
 # ---------------------- Helper: Get Available Parking Spaces ----------------------
 def get_available_spaces():
