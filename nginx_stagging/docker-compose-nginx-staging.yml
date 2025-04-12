@@ -1,0 +1,20 @@
+
+version: '3.8'
+
+services:
+  nginx-staging:
+    image: nginx:alpine
+    container_name: nginx-staging
+    volumes:
+      - ./nginx-staging.conf:/etc/nginx/nginx.conf:ro
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+    ports:
+      - "8080:80"
+      - "8443:443"
+    networks:
+      - staging-network
+    restart: always
+
+networks:
+  staging-network:
+    external: true
