@@ -26,4 +26,4 @@ ENV FLASK_APP=backend.py
 ENV FLASK_ENV=staging
 
 # Run the Flask application
-CMD ["flask", "run", "--host=0.0.0.0"]
+CMD ["flask", "run", "--host=0.0.0.0","--port=5001"]
