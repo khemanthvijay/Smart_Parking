@@ -1,6 +1,6 @@
 from flask import jsonify
 from flask_jwt_extended import get_jwt_identity, jwt_required
-import redis
+import redis,json
 from functools import wraps
 
 # Redis Connection
@@ -12,7 +12,7 @@ def role_required(allowed_roles):
         @wraps(func)
         @jwt_required(locations=["cookies"])
         def wrapper(*args, **kwargs):
-            current_user = get_jwt_identity()
+            current_user = json.loads(get_jwt_identity())
 
             # Check Redis for active session
             session_token = redis_client.get(f"user:{current_user['id']}")
