@@ -192,4 +192,4 @@ app.register_blueprint(guest_bp)
 
 # ---------------------- RUN THE SERVER ----------------------
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port=5001)
