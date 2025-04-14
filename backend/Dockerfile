@@ -23,7 +23,7 @@ EXPOSE 5001
 
 # Set environment variables for Flask
 ENV FLASK_APP=backend.py
-ENV FLASK_ENV=production
+ENV FLASK_ENV=staging
 
 # Run the Flask application
 CMD ["flask", "run", "--host=0.0.0.0"]
