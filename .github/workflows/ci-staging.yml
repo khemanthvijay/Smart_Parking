@@ -32,7 +32,7 @@ jobs:
     - name: Build and Push Backend (staging)
       run: |
         IMAGE_URI=537124969361.dkr.ecr.us-west-1.amazonaws.com/smart_parking_backend
-        docker build -t $IMAGE_URI:staging ./backend
+        docker build --no-cache -t $IMAGE_URI:staging ./backend
         docker push $IMAGE_URI:staging
 
     - name: Deploy to EC2 (staging)
