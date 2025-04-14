@@ -42,6 +42,6 @@ jobs:
         chmod 600 ~/.ssh/id_rsa
         ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
           cd ~/staging
-          docker-compose -f /staging/docker-compose-staging.yml pull
-          docker-compose -f /staging/docker-compose-staging.yml up -d
+          docker-compose -f docker-compose-staging.yml pull
+          docker-compose -f docker-compose-staging.yml up -d
         EOF
