@@ -19,7 +19,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Expose the Flask port
-EXPOSE 5000
+EXPOSE 5001
 
 # Set environment variables for Flask
 ENV FLASK_APP=backend.py
