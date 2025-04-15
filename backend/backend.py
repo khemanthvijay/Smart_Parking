@@ -27,7 +27,7 @@ db_conn = psycopg2.connect(os.getenv("DATABASE_URL"))
 db_cursor = db_conn.cursor()
 
 # Redis Connection
-redis_client = redis.StrictRedis(redis_host = os.getenv("REDIS_HOST"), port=6379, db=0, decode_responses=True)
+redis_client = redis.StrictRedis(host = os.getenv("REDIS_HOST"), port=6379, db=0, decode_responses=True)
 
 # Role-Based Access Control Decorator
 
