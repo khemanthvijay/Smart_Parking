@@ -1,10 +1,10 @@
 from flask import jsonify
 from flask_jwt_extended import get_jwt_identity, jwt_required
-import redis,json
+import redis,json, os
 from functools import wraps
 
 # Redis Connection
-redis_client = redis.StrictRedis(host="localhost", port=6379, db=0, decode_responses=True)
+redis_client = redis.StrictRedis(redis_host = os.getenv("REDIS_HOST"), port=6379, db=0, decode_responses=True)
 
 # Role-Based Access Control (RBAC) Decorator
 def role_required(allowed_roles):
